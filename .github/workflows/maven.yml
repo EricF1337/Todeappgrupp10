@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     services:
@@ -29,11 +28,15 @@ jobs:
       - name: Klona repo
         uses: actions/checkout@v3
 
-      - name: Ställ in JDK 17
+      - name: Ställ in JDK 17 och Maven
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Verifiera Maven-installation
+        run: mvn -v
 
       - name: Vänta på att MySQL startar
         run: |

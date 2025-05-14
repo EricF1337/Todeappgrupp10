@@ -43,7 +43,8 @@ jobs:
           echo "Väntar på att MySQL ska starta..."
           sleep 20
 
-      - name: Bygg och kör tester
+      - name: Bygg och kör tester (från demo-mapp)
+        working-directory: demo
         run: ./mvnw clean verify
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/tododb

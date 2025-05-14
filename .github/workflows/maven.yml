@@ -43,6 +43,10 @@ jobs:
           echo "Väntar på att MySQL ska starta..."
           sleep 20
 
+      - name: Ge körbarhetsrättigheter till mvnw
+        working-directory: demo
+        run: chmod +x mvnw
+
       - name: Bygg och kör tester (från demo-mapp)
         working-directory: demo
         run: ./mvnw clean verify

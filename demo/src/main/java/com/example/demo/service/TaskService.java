@@ -30,7 +30,7 @@ public class TaskService {
         if (task != null) {
             task.setTitle(taskDetails.getTitle());
             task.setDescription(taskDetails.getDescription());
-            task.setStatus(taskDetails.getStatus());
+            task.setDone(taskDetails.isDone()); // ✅ ändrat från status till done
             return taskRepository.save(task);
         }
         return null;

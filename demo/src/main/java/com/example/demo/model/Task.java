@@ -1,11 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Task {
@@ -14,13 +9,13 @@ public class Task {
     private Long id;
     private String title;
     private String description;
-    private String status;
+    private boolean done;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Getters och  Setters
+    // Getters och Setters
     public Long getId() {
         return id;
     }
@@ -45,12 +40,12 @@ public class Task {
         this.description = description;
     }
 
-    public String getStatus() {
-        return status;
+    public boolean isDone() {
+        return done;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public User getUser() {

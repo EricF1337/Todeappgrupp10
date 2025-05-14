@@ -39,7 +39,7 @@ public class TaskServiceTest {
         task.setId(1L);
         task.setTitle("Test Task");
         task.setDescription("This is a test task.");
-        task.setStatus("Pending");
+        task.setDone(false); // ✅ ändrat från status
 
         when(taskRepository.save(any(Task.class))).thenReturn(task);
 
@@ -86,17 +86,17 @@ public class TaskServiceTest {
         existingTask.setId(1L);
         existingTask.setTitle("Old Task");
         existingTask.setDescription("Old Description");
-        existingTask.setStatus("Pending");
+        existingTask.setDone(false); // ✅ ändrat
 
         Task updatedTask = new Task();
         updatedTask.setTitle("Updated Task");
         updatedTask.setDescription("Updated Description");
-        updatedTask.setStatus("Completed");
+        updatedTask.setDone(true); // ✅ ändrat
 
         when(taskRepository.findById(1L)).thenReturn(Optional.of(existingTask));
         when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> {
             Task taskToSave = invocation.getArgument(0);
-            taskToSave.setId(existingTask.getId()); // Ensure ID is retained
+            taskToSave.setId(existingTask.getId());
             return taskToSave;
         });
 
@@ -104,7 +104,7 @@ public class TaskServiceTest {
         assertNotNull(result);
         assertEquals("Updated Task", result.getTitle());
         assertEquals("Updated Description", result.getDescription());
-        assertEquals("Completed", result.getStatus());
+        assertEquals(true, result.isDone()); // ✅ ändrat
     }
 
     @Test

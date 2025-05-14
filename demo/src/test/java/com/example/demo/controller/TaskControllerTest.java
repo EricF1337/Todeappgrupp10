@@ -14,6 +14,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * Komponenttester av TaskController med MockMvc
+ * Testar HTTP-endpoints isolerat från andra lager.
+ */
 @WebMvcTest(TaskController.class)
 public class TaskControllerTest {
 
@@ -22,6 +26,12 @@ public class TaskControllerTest {
 
     @MockBean
     private TaskService taskService;
+
+    /**
+     * Komponenttest:
+     * Verifierar att en uppgift kan skapas via POST /api/tasks
+     * och att rätt data returneras.
+     */
 
     @Test
     public void testCreateTask() throws Exception {
@@ -40,6 +50,12 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.title").value("Test Task"));
     }
 
+    /**
+     * Komponenttest:
+     * Verifierar att alla uppgifter hämtas korrekt via GET /api/tasks
+     * och att svaret är en JSON-array.
+     */
+
     @Test
     public void testGetAllTasks() throws Exception {
         when(taskService.getAllTasks()).thenReturn(java.util.Collections.emptyList());
@@ -50,6 +66,11 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$").isArray());
     }
 
+    /**
+     * Komponenttest:
+     * Verifierar att en specifik uppgift kan hämtas via GET /api/tasks/{id}
+     * och att rätt innehåll returneras.
+     */
     @Test
     public void testGetTaskById() throws Exception {
         Task task = new Task();
@@ -63,6 +84,11 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.title").value("Test Task"));
     }
 
+    /**
+     * Komponenttest:
+     * Verifierar att en uppgift uppdateras korrekt via PUT /api/tasks/{id}
+     * och att uppdaterad data returneras.
+     */
     @Test
     public void testUpdateTask() throws Exception {
         Task task = new Task();
@@ -82,6 +108,11 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.done").value(true));
     }
 
+    /**
+     * Komponenttest:
+     * Verifierar att en uppgift tas bort korrekt via DELETE /api/tasks/{id}
+     * och att rätt statuskod returneras (204 No Content).
+     */
     @Test
     public void testDeleteTask() throws Exception {
         mockMvc.perform(delete("/api/tasks/1"))

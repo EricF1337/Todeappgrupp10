@@ -15,6 +15,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Komponenttester av UserController med MockMvc
+ * Syftar till att testa HTTP-endpoints utan att involvera riktig service- eller databaslogik.
+ */
+
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
 
@@ -23,6 +28,12 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService; // Use @MockBean to inject a mock of UserService
+
+    /**
+     * Komponenttest:
+     * Verifierar att en användare kan skapas via POST /api/users
+     * och att korrekt information returneras i JSON-svaret.
+     */
 
     @Test
     public void testCreateUser() throws Exception {
@@ -41,6 +52,11 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.username").value("testuser"));
     }
 
+    /**
+     * Komponenttest:
+     * Verifierar att alla användare hämtas korrekt via GET /api/users
+     * och att svaret är en JSON-array.
+     */
     @Test
     public void testGetAllUsers() throws Exception {
         when(userService.getAllUsers()).thenReturn(java.util.Collections.emptyList()); // Example mock
@@ -50,6 +66,11 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$").isArray());
     }
 
+    /**
+     * Komponenttest:
+     * Verifierar att en specifik användare kan hämtas via GET /api/users/{id}
+     * och att rätt data returneras.
+     */
     @Test
     public void testGetUserById() throws Exception {
         User user = new User();
@@ -62,7 +83,11 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("testuser"));
     }
-
+    /**
+     * Komponenttest:
+     * Verifierar att en användare uppdateras korrekt via PUT /api/users/{id}
+     * och att uppdaterad information returneras.
+     */
     @Test
     public void testUpdateUser() throws Exception {
         User user = new User();
@@ -79,6 +104,11 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.username").value("updateduser"))
                 .andExpect(jsonPath("$.email").value("new@example.com"));
     }
+    /**
+     * Komponenttest:
+     * Verifierar att en användare tas bort korrekt via DELETE /api/users/{id}
+     * och att rätt HTTP-status (204 No Content) returneras.
+     */
 
     @Test
     public void testDeleteUser() throws Exception {

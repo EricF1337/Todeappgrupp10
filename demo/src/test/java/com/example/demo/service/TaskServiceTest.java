@@ -20,6 +20,10 @@ import org.mockito.MockitoAnnotations;
 import com.example.demo.model.Task;
 import com.example.demo.repository.TaskRepository;
 
+/**
+ * Enhetstester för TaskService:
+ * Dessa tester isolerar affärslogiken från databasen genom att mocka TaskRepository.
+ */
 public class TaskServiceTest {
 
     @Mock
@@ -33,13 +37,17 @@ public class TaskServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att createTask returnerar ett korrekt Task-objekt efter att det sparats via mockad repository.
+     */
     @Test
     public void testCreateTask() {
         Task task = new Task();
         task.setId(1L);
         task.setTitle("Test Task");
         task.setDescription("This is a test task.");
-        task.setDone(false); // ✅ ändrat från status
+        task.setDone(false);
 
         when(taskRepository.save(any(Task.class))).thenReturn(task);
 
@@ -48,6 +56,10 @@ public class TaskServiceTest {
         assertEquals("Test Task", createdTask.getTitle());
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att getAllTasks returnerar en lista med alla tasks som finns i mockad repository.
+     */
     @Test
     public void testGetAllTasks() {
         List<Task> tasks = new ArrayList<>();
@@ -67,6 +79,10 @@ public class TaskServiceTest {
         assertEquals(2, foundTasks.size());
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att en task kan hämtas korrekt via ID från mockad repository.
+     */
     @Test
     public void testGetTaskById() {
         Task task = new Task();
@@ -80,18 +96,23 @@ public class TaskServiceTest {
         assertEquals("Test Task", foundTask.getTitle());
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att uppdatering av en befintlig task fungerar korrekt
+     * genom att kontrollera att sparad data matchar den uppdaterade inputen.
+     */
     @Test
     public void testUpdateTask() {
         Task existingTask = new Task();
         existingTask.setId(1L);
         existingTask.setTitle("Old Task");
         existingTask.setDescription("Old Description");
-        existingTask.setDone(false); // ✅ ändrat
+        existingTask.setDone(false);
 
         Task updatedTask = new Task();
         updatedTask.setTitle("Updated Task");
         updatedTask.setDescription("Updated Description");
-        updatedTask.setDone(true); // ✅ ändrat
+        updatedTask.setDone(true);
 
         when(taskRepository.findById(1L)).thenReturn(Optional.of(existingTask));
         when(taskRepository.save(any(Task.class))).thenAnswer(invocation -> {
@@ -104,9 +125,13 @@ public class TaskServiceTest {
         assertNotNull(result);
         assertEquals("Updated Task", result.getTitle());
         assertEquals("Updated Description", result.getDescription());
-        assertEquals(true, result.isDone()); // ✅ ändrat
+        assertEquals(true, result.isDone());
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att deleteTask anropar deleteById korrekt i repository.
+     */
     @Test
     public void testDeleteTask() {
         doNothing().when(taskRepository).deleteById(1L);

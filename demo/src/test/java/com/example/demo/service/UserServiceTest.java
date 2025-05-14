@@ -20,6 +20,10 @@ import org.mockito.MockitoAnnotations;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 
+/**
+ * Enhetstester för UserService:
+ * Testerna isolerar logiken från databasen genom att mocka UserRepository.
+ */
 public class UserServiceTest {
 
     @Mock
@@ -33,6 +37,10 @@ public class UserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att en användare skapas korrekt och returneras från service-lagret.
+     */
     @Test
     public void testCreateUser() {
         User user = new User();
@@ -48,6 +56,10 @@ public class UserServiceTest {
         assertEquals("testuser", createdUser.getUsername());
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att en lista med alla användare returneras korrekt.
+     */
     @Test
     public void testGetAllUsers() {
         List<User> users = new ArrayList<>();
@@ -67,6 +79,10 @@ public class UserServiceTest {
         assertEquals(2, foundUsers.size());
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att en specifik användare kan hämtas via ID.
+     */
     @Test
     public void testGetUserById() {
         User user = new User();
@@ -80,6 +96,11 @@ public class UserServiceTest {
         assertEquals("testuser", foundUser.getUsername());
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att uppdatering av en användare sker korrekt
+     * och att uppdaterade värden returneras.
+     */
     @Test
     public void testUpdateUser() {
         User existingUser = new User();
@@ -104,6 +125,10 @@ public class UserServiceTest {
         assertEquals("updated@example.com", result.getEmail());
     }
 
+    /**
+     * Enhetstest:
+     * Verifierar att deleteUser anropar deleteById korrekt i repository.
+     */
     @Test
     public void testDeleteUser() {
         doNothing().when(userRepository).deleteById(1L);
